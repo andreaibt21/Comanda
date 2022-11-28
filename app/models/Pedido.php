@@ -1,134 +1,201 @@
 <?php
 require_once './herramientas/herramientas.php';
-class PedidoXProducto
+class Pedido
 {
     public $id;
-    public $id_pedido;
-    public $id_producto;
-    public $cantidad;
+    public $id_mesa;
+    public $id_cliente;
+    public $id_usuario;
+    public $foto;
+    public $creado;
     public $fecha_prevista;
     public $fecha_fin;
+    public $precio_final;
     public $actualizado;
-    public $creado;
     public $activo;
-    
-    public $estado; 
-    /*
-    0 - Pendiente 
-    1 - En preparación 
-    2 - Listo
-     */
-    
-    public function crearPedidoXProducto()
+    public $estado;
+    // 1 - "con cliente esperando pedido”
+    // 2 - ”con cliente comiendo”
+    // 3 - “con cliente pagando”
+    // 4 - “cerrada”.
+
+    public static function crearPedido($pedido) //listo
     {
-       
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "INSERT 
-                INTO pedido_producto (id_pedido, id_producto, id_usuario, cantidad, estado, creado, actualizado, activo)
-                VALUES (:id_pedido, :id_producto,:id_usuario, :cantidad, :estado, :creado, :actualizado,:activo)"
-        );
-        $fecha = new DateTime(date("d-m-Y"));
-        $consulta->bindValue(':creado', date_format($fecha, 'Y-m-d H:i:s'));
-        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
 
-        $consulta->bindValue(':id_pedido', $this->id_pedido, PDO::PARAM_STR);
-        $consulta->bindValue(':id_producto', $this->id_producto, PDO::PARAM_STR);
-        $consulta->bindValue(':id_usuario', $this->id_usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_STR);
-        $consulta->bindValue(':estado',  $this->estado, PDO::PARAM_STR);
-        $consulta->bindValue(':activo',  $this->activo, PDO::PARAM_STR);
-     
-        $consulta->execute();
+        $retorno = 0;
+        $idMesaAux = AccesoDatos::retornarObjetoActivoPorCampo($pedido->id_mesa, 'id_mesa', 'pedido', 'Pedido');
+        if (sizeof($idMesaAux) == 0) {
+            $idUsuarioAux = AccesoDatos::retornarObjetoActivoPorCampo($pedido->id_usuario, 'id', 'usuario', 'Usuario');
+            $retorno = 2;
+            if (sizeof($idUsuarioAux) > 0) {
+                $objAccesoDatos = AccesoDatos::obtenerInstancia();
+                $consulta = $objAccesoDatos->prepararConsulta(
+                    "INSERT
+                        INTO  pedido (id_mesa, id_cliente, id_usuario, estado, creado, fecha_prevista, actualizado, activo)
+                        VALUES (:id_mesa, :id_cliente, :id_usuario, :estado, :creado, :fecha_prevista, :actualizado, :activo)");
+                $consulta->bindValue(':id_mesa', $pedido->id_mesa, PDO::PARAM_STR);
+                $consulta->bindValue(':id_cliente', $pedido->id_cliente, PDO::PARAM_STR);
+                $consulta->bindValue(':id_usuario', $pedido->id_usuario, PDO::PARAM_STR);
+                $consulta->bindValue(':estado', '1', PDO::PARAM_STR);
+                $consulta->bindValue(':activo', '1', PDO::PARAM_STR);
+                $fecha = new DateTime(date("d-m-Y H:i:s"));
+                $consulta->bindValue(':creado', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+                $fecha_prevista = $fecha->modify('+' . $pedido->fecha_prevista . ' minutes');
+                $consulta->bindValue(':fecha_prevista', date_format($fecha_prevista, 'Y-m-d H:i:s'), PDO::PARAM_STR);
+                $consulta->execute();
 
-        return $objAccesoDatos->obtenerUltimoId();
+                $retorno = 1;
+            }
+        }
+        return $retorno;
+
     }
 
-    public static function obtenerTodos()
+    public static function Modificar($pedido) //listo
     {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * 
-                FROM pedido_producto"
-        );
-        $consulta->execute();
+        $retorno = 0;
+        $pedidoAux = AccesoDatos::retornarObjetoActivo($pedido->id, 'pedido', 'Pedido');
+        if (sizeof($pedidoAux) > 0) { //($valor, $campo, $tabla, $clase)
+            // var_dump($pedidoAux);
+            $mesaAux = AccesoDatos::retornarObjetoActivoPorCampo($pedido->id_mesa, 'id', 'pedido', 'Pedido');
+            $mesaAuxEnMesa = AccesoDatos::retornarObjetoActivoPorCampo($pedido->id_mesa, 'id', 'mesa', 'Mesa');
+            $retorno = 1;
+            //var_dump($mesaAuxEnMesa);
+            if ($mesaAux == null && $mesaAuxEnMesa != null) {
+                $idUsuarioAux = AccesoDatos::retornarObjetoActivoPorCampo($pedido->id_usuario, 'id', 'usuario', 'Usuario');
+                // var_dump(  $idUsuarioAux);
+                // var_dump( $pedido->id_usuario ."   id ");
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoXProducto');
+                $retorno = 3;
+                if (sizeof($idUsuarioAux) > 0) {
+                    $objAccesoDato = AccesoDatos::obtenerInstancia();
+                    $consulta = $objAccesoDato->prepararConsulta(
+                        "UPDATE pedido
+                                SET id_mesa = :id_mesa,
+                                    id_cliente = :id_cliente,
+                                    id_usuario = :id_usuario,
+                                    estado = :estado,
+                                    fecha_fin = :fecha_fin,
+                                    precio_final = :precio_final,
+                                    activo = :activo,
+                                    foto = :foto,
+                                    actualizado = :actualizado
+                                WHERE id = :id");
+                    $pedidoAux[0]->id_mesa = $pedido->id_mesa;
+                    $pedidoAux[0]->id_usuario = $pedido->id_usuario;
+                    $consulta->bindValue(':id', $pedidoAux[0]->id, PDO::PARAM_STR);
+                    $consulta->bindValue(':id_mesa', $pedidoAux[0]->id_mesa, PDO::PARAM_STR);
+                    $consulta->bindValue(':id_cliente', $pedidoAux[0]->id_cliente, PDO::PARAM_STR);
+                    $consulta->bindValue(':id_usuario', $pedidoAux[0]->id_usuario);
+                    $consulta->bindValue(':estado', $pedidoAux[0]->estado, PDO::PARAM_STR);
+                    $consulta->bindValue(':fecha_fin', $pedidoAux[0]->fecha_fin);
+                    $consulta->bindValue(':precio_final', $pedidoAux[0]->precio_final);
+                    $consulta->bindValue(':activo', $pedidoAux[0]->activo, PDO::PARAM_STR);
+                    $consulta->bindValue(':foto', $pedidoAux[0]->foto, PDO::PARAM_STR);
+                    $fecha = new DateTime(date("d-m-Y H:i:s"));
+                    $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+                    $consulta->execute();
+                    //var_dump($pedidoAux[0]);
+                    $retorno = 2;
+                }
+            }
+        }
+        return $retorno;
     }
 
-    public static function obtenerCriptomoneda($nombre)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * 
-                FROM pedido 
-                WHERE nombre = :nombre"
-        );
-        $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
-        $consulta->execute();
-
-        return $consulta->fetchObject('PedidoXProducto');
-    }
-
-    public function modificarCriptomoneda($pedido)
-    {
-        $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE pedido 
-                SET nombre = :nombre,
-                    precio=:precio , 
-                    activo= :activo, 
-                    creado= :creado 
-           WHERE id = :id"
-        );
-        $consulta->bindValue(':nombre', $pedido->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':precio', $pedido->precio, PDO::PARAM_STR);
-        $consulta->bindValue(':activo', $pedido->activo, PDO::PARAM_STR);
-        $consulta->bindValue(':creado', $pedido->creado, PDO::PARAM_STR);
-        $consulta->bindValue(':id', $pedido->id, PDO::PARAM_STR);
-        $consulta->execute();
-    }
-
-    public static function borrarCriptomoneda($nombre)
-    {
-        $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE pedido 
-                SET actualizado = :actualizado 
-              WHERE nombre = :nombre"
-        );
-        $fecha = new DateTime(date("d-m-Y"));
-        $consulta->bindValue(':nombre', $nombre, PDO::PARAM_INT);
-        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
-        $consulta->execute();
-    }
-
-    
-    public static function obtenerCriptomonedaPorId($id)
+    public static function ObtenerTodos() //listo
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * 
-            FROM pedido 
-            WHERE id = :id"
+            "SELECT *
+            FROM pedido"
         );
-        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetchObject('PedidoXProducto');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
-    
-    public static function obtenerPedidoXProductoPorSector($id_pedido)
+
+    public static function borrarPedido($id) //listo
     {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * 
-               FROM pedido 
-              WHERE id_pedido = :id_pedido"
-        );
-        $consulta->bindValue(':id_pedido', $id_pedido, PDO::PARAM_STR);
-        $consulta->execute();
+        $retorno = 0;
+        $sectorAux = AccesoDatos::retornarObjetoActivo($id, 'pedido', 'Pedido');
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS,'PedidoXProducto');
+        if ($sectorAux != null) {
+
+            $conexion = AccesoDatos::obtenerInstancia();
+            $consulta = $conexion->prepararConsulta(
+                "UPDATE pedido
+                            SET activo = :activo , actualizado = :actualizado
+                            WHERE id = $id");
+            $fecha = new DateTime(date("d-m-Y"));
+            $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+            $consulta->bindValue(':activo', '0', PDO::PARAM_STR);
+            $consulta->execute();
+
+            return 1;
+
+        }
+        return $retorno;
     }
+
+    public static function CambiarEstado($idPedido, $estado) //listo
+    {
+        // 1 - "con cliente esperando pedido” - estado inicial
+        
+        $pedido = AccesoDatos::retornarObjetoActivo($idPedido, 'pedido', 'Pedido');
+        // 2 - ”con cliente comiendo”
+        $pedido[0]->estado = $estado; //comiendo
+        $retorno = 'Mesa pasada a comiendo.';
+        switch ($estado) {
+            case 3:
+                // 3 - “con cliente pagando”
+                $pedido[0]->precio_final =  Pedido::CalcularPrecioFinal($idPedido); //calcular precio
+                $retorno = $pedido[0]->precio_final;
+                break;
+                case 4:
+                    // 4 - “cerrada”.
+                $fecha = new DateTime(date("d-m-Y H:i:s"));
+                $pedido[0]->fecha_fin = $fecha->format("Y-m-d H:i:s");
+                $retorno = 'Mesa cerrada';
+                break;
+
+        }
+         $objAccesoDato = AccesoDatos::obtenerInstancia();
+         $consulta = $objAccesoDato->prepararConsulta(
+             "UPDATE pedido
+                     SET 
+                         estado = :estado,
+                         fecha_fin = :fecha_fin,
+                         precio_final = :precio_final,
+                         actualizado = :actualizado
+                     WHERE id = :id");
+   
+         $consulta->bindValue(':id', $pedido[0]->id, PDO::PARAM_STR);
+         $consulta->bindValue(':estado', $estado, PDO::PARAM_STR);
+         $consulta->bindValue(':fecha_fin', $pedido[0]->fecha_fin);
+         $consulta->bindValue(':precio_final', $pedido[0]->precio_final);
+         $fecha = new DateTime(date("d-m-Y H:i:s"));
+         $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+         $consulta->execute();
+
+        return $retorno;
+    }
+
+    public static function CalcularPrecioFinal($idPedido) //hacerpedidoproducto
+    {
+        $precio = 0;
+
+        $sql = "SELECT SUM(precio) 
+                    AS precio_final 
+                    FROM pedido_producto
+                    WHERE id_pedido = $idPedido;"; 
+        $conexion = AccesoDatos::obtenerInstancia();
+        $consulta = $conexion->prepararConsulta($sql);
+        $consulta->execute();
+        $precio = $consulta->fetch(); 
+        //echo "precio  " . $precio;
+        return $precio[0];
+    }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-include_once("token/Token.php");
+
 include_once("db/AccesoDatos.php");
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,7 +17,7 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo != null)
                 {
                     return $handler->handle($request);
@@ -37,26 +37,6 @@ class UsuarioMW
             return $response->withHeader('Content-Type', 'application/json');;
         }
     }
-
-    public static function ValidarToken($request, $handler)
-    {
-        $header = $request->getHeaderLine('Authorization');
-        $response = new Response();
-
-        if(!empty($header))
-        {
-            $token = trim(explode("Bearer", $header)[1]);
-            Token::verifyToken($token);
-            $response = $handler->handle($request);
-        }
-        else
-        {
-            $response->getBody()->write(json_encode(array("Token error" => "No hay token.")));
-            $response = $response->withStatus(401);
-        }
-        return  $response->withHeader('Content-Type', 'application/json');
-    } 
-
     public function ValidarCliente($request, $handler)
     {
         try 
@@ -65,10 +45,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if(  $data->tipo == 'cliente'  )
                 {
-                    echo "Cliente autorizado";
+                    echo "Cliente autorizado :D";
                     return $handler->handle($request);
                 }
                 throw new Exception("Usuario no autorizado");
@@ -95,10 +75,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 'admin')
                 {
-                    echo "Admin autorizado";
+                    echo "Admin autorizado :D";
 
                     return $handler->handle($request);
                 }
@@ -126,10 +106,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 1)
                 {
-                    echo "Mozo autorizado";
+                    echo "Mozo autorizado :D";
 
                     return $handler->handle($request);
                 }
@@ -143,7 +123,7 @@ class UsuarioMW
         catch (\Throwable $th) 
         {
             $response = new Response();
-            $payload = json_encode(array("mensaje" => "ERROR, ".$th->getMessage()));
+            $payload = json_encode(array("mensaje" => "ERROR,m ".$th->getMessage()));
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');;
         }
@@ -157,10 +137,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 2)
                 {
-                    echo "Socio autorizado";
+                    echo "Socio autorizado :D";
 
                     return $handler->handle($request);
                 }
@@ -188,10 +168,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 3)
                 {
-                    echo "Bartender autorizado";
+                    echo "Bartender autorizado :D";
 
                     return $handler->handle($request);
                 }
@@ -218,10 +198,10 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 4)
                 {
-                    echo "Cervecero autorizado";
+                    echo "Cervecero autorizado :D";
 
                     return $handler->handle($request);
                 }
@@ -248,7 +228,7 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 5)
                 {
                     echo "Cocinero autorizado";
@@ -278,7 +258,7 @@ class UsuarioMW
             if(!empty($header))
             {
                 $token = trim(explode("Bearer", $header)[1]);
-                $data = Token::verifyToken($token);
+                $data = AutentificadorJWT::ObtenerData($token);
                 if($data->tipo == 6)
                 {
                     echo "Repostero autorizado";

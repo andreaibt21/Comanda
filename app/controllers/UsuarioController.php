@@ -4,7 +4,7 @@ require_once './interfaces/IApiUsable.php';
 
 class UsuarioController extends Usuario implements IApiUsable
 {
-  public function CargarUno($request, $response, $args)
+  public function CargarUno($request, $response, $args) //listo
   {
     $parametros = $request->getParsedBody();
 
@@ -27,11 +27,11 @@ class UsuarioController extends Usuario implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerUno($request, $response, $args)
+  public function TraerUno($request, $response, $args) //listo
   {
     $parametros = $request->getParsedBody();
-    $mail = $parametros['mail'];
-    $usuario = Usuario::obtenerUsuario($mail);
+    $id = $parametros['id'];
+    $usuario = Usuario::obtenerUsuario($id);
     $payload = json_encode($usuario);
 
     $response->getBody()->write($payload);
@@ -39,7 +39,7 @@ class UsuarioController extends Usuario implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTodos($request, $response, $args)
+  public function TraerTodos($request, $response, $args) //listo
   {
     $lista = Usuario::obtenerTodos();
     $payload = json_encode(array("listaUsuario" => $lista));
@@ -49,34 +49,88 @@ class UsuarioController extends Usuario implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function ModificarUno($request, $response, $args)
+  public function ModificarUno($request, $response, $args) //listo
   {
-    $datos = json_decode(file_get_contents("php://input"), true);
-    //$parametros = $request->getParsedBody();
 
-    $usuarioAModificar = new Usuario();
-    $usuarioAModificar->id=$datos["id"]; 
-    $usuarioAModificar->mail=$datos["mail"]; 
-    $usuarioAModificar->clave=$datos["clave"]; 
-  
-    if(array_key_exists("fechaBaja",$datos))
+
+    try
     {
-      $usuarioAModificar->fechaBaja=$datos["fechaBaja"]; 
+        $params = $request->getParsedBody();
+        $usuario = new Usuario();
+        $usuario->id = $params["id"];
+        $usuario->tipo = $params["tipo"];
+        $usuario->dni = $params["dni"];
+        $usuario->clave = $params["clave"];
+        $modificacion = Usuario::Modificar($usuario);
+
+        switch($modificacion)
+        {
+            case 1:
+                $respuesta = "Usuario modificado con éxito.";
+                break;
+            case 2:
+                $respuesta = "El DNI ya existe en la base de datos.";
+                break;
+            case 3:
+                $respuesta = "Este ID no corresponde a ningún usuario";
+                break;
+            default:
+                $respuesta = "Nunca llega a la modificacion";
+        }    
+        $payload = json_encode($respuesta);
+        $response->getBody()->write($payload);
+        $newResponse = $response->withHeader('Content-Type', 'application/json');
     }
-    if(array_key_exists("perfil",$datos))
+    catch(Throwable $mensaje)
     {
-      $usuarioAModificar->perfil=$datos["perfil"]; 
+        printf("Error al modificar: <br> $mensaje .<br>");
     }
-    Usuario::modificarUsuario($usuarioAModificar);
+    finally
+    {
+     // $newResponse = $response->withHeader('Content-Type', 'application/json');
 
-    $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+        return $newResponse;
+    }
 
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
+
+
+
+
+
+
+
+
+
+
+    // $datos = json_decode(file_get_contents("php://input"), true);
+    // //$parametros = $request->getParsedBody();
+
+    // $usuarioAModificar = new Usuario();
+    // $usuarioAModificar->id=$datos["id"]; 
+    // $usuarioAModificar->dni=$datos["dni"]; 
+    // $usuarioAModificar->clave=$datos["clave"]; 
+    // if(array_key_exists("tipo",$datos))
+    // {
+    //   $usuarioAModificar->clave=$datos["tipo"]; 
+    // }
+    // if(array_key_exists("fechaBaja",$datos))
+    // {
+    //   $usuarioAModificar->fechaBaja=$datos["fechaBaja"]; 
+    // }
+    // if(array_key_exists("perfil",$datos))
+    // {
+    //   $usuarioAModificar->perfil=$datos["perfil"]; 
+    // }
+    // Usuario::modificarUsuario($usuarioAModificar);
+
+    // $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+
+    // $response->getBody()->write($payload);
+    // return $response
+    //   ->withHeader('Content-Type', 'application/json');
   }
 
-  public function BorrarUno($request, $response, $args)
+  public function BorrarUno($request, $response, $args) //listo
   {
     $parametros = $request->getParsedBody();
 

@@ -8,102 +8,104 @@ class Sector
     public $creado;
     public $actualizado;
 
-
-    public function crearSector()
+    public static function crearSector($sector) //listo
     {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "INSERT 
-                INTO sector (nombre, activo, creado, actualizado) 
-                VALUES (:nombre, :activo, :creado, actualizado)"
-        );
+        $retorno = 0;                                    //($valor, $campo, $tabla, $clase)
+        $sectorAux = AccesoDatos::retornarObjetoPorCampo($sector->nombre, "nombre", "sector", "Sector");
 
-        $fecha = new DateTime( date("d-m-Y") );
-        $consulta->bindValue(':creado'     , date_format($fecha, 'Y-m-d H:i:s'));
-        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+        if ($sectorAux == null) {
+            $objAccesoDatos = AccesoDatos::obtenerInstancia();
+            $consulta = $objAccesoDatos->prepararConsulta(
+                "INSERT
+                INTO sector (nombre, activo, creado, actualizado)
+                VALUES (:nombre, :activo, :creado, :actualizado)"
+            );
 
-        $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':activo', $this->activo, PDO::PARAM_STR);
-        $consulta->execute();
+            $fecha = new DateTime(date("d-m-Y H:i:s"));
+            $consulta->bindValue(':creado', date_format($fecha, 'Y-m-d H:i:s'));
+            $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+            $consulta->bindValue(':nombre', $sector->nombre, PDO::PARAM_STR);
+            $consulta->bindValue(':activo', '1', PDO::PARAM_STR);
+            $consulta->execute();
 
-        return $objAccesoDatos->obtenerUltimoId();
+            $retorno = 1;
+
+        } else {
+            $sectorAux[0]->activo = 1;
+             Sector::modificarSector($sectorAux[0]);
+            $retorno = 2;
+        }
+        return $retorno;
+
     }
 
-    public static function obtenerTodos()
+    public static function modificarSector($sector)//listo
+    {
+        $retorno = 3;
+        $sectorAux = AccesoDatos::retornarObjetoActivo($sector->id, 'sector', 'Sector');
+
+        if ($sectorAux != null) {
+            $sectorAuxNombre = AccesoDatos::retornarObjetoPorCampo($sector->nombre, 'nombre', 'sector', 'Sector');
+            $retorno = 2; //es el mismo nombre
+            if ($sectorAuxNombre == null) {
+                $sector->activo = 1;
+                // Sector::modificarRegistro($sector);
+                $objAccesoDato = AccesoDatos::obtenerInstancia();
+                $consulta = $objAccesoDato->prepararConsulta("UPDATE sector
+                                                              SET nombre = :nombre, 
+                                                                  activo = :activo,
+                                                                  actualizado = :actualizado
+                                                              WHERE id = :id");
+                $consulta->bindValue(':id', $sector->id, PDO::PARAM_STR);
+                $consulta->bindValue(':nombre', $sector->nombre, PDO::PARAM_STR);
+                $consulta->bindValue(':activo', $sector->activo, PDO::PARAM_STR);
+                $fecha = new DateTime(date("d-m-Y H:i:s"));
+                $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->execute();
+                $retorno = 1; //se cambia el nombre
+            }
+        }
+        return $retorno;
+
+    }
+
+    public static function obtenerTodos()//listo
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * 
+            "SELECT *
             FROM sector"
         );
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Sector');
     }
-   /*
-    public static function obtenerSectorPorTipo($tipo)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * FROM usuario 
-            WHERE tipo = :tipo"
-        );
-        $consulta->bindValue(':tipo', $tipo, PDO::PARAM_STR);
-        $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS,'Sector');
-    }
-    public static function obtenerSector($mail)
+    public static function borrarSector($id)//listo
     {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "SELECT * FROM usuario 
-            WHERE mail = :mail"
-        );
-        $consulta->bindValue(':mail', $mail, PDO::PARAM_STR);
-        $consulta->execute();
+        $retorno = 0;
+        $sectorAux = AccesoDatos::retornarObjetoActivo($id, 'sector', 'Sector');
 
-        return $consulta->fetchObject('Sector');
-    }
+        if ($sectorAux != null) {    
+                                            //($valor, $campo, $tabla, $clase)
+            $productoAux = AccesoDatos::retornarObjetoActivoPorCampo($id, 'id_sector', 'producto', 'Producto');
+            $retorno = 2;
+            if (sizeof($productoAux) == 0) {
 
-    public function modificarSector($usuario)
-    {
-        $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE usuario 
-                SET tipo = :tipo,
-                    clave = :clave,
-                    fechaBaja = :fechaBaja
-                WHERE mail = :mail"
-        );
-        if ($usuario->tipo != null) {
-            $consulta->bindValue(':tipo', $usuario->tipo, PDO::PARAM_STR);
-        } else {
-            $consulta->bindValue(':tipo', null, PDO::PARAM_STR);
+                $conexion = AccesoDatos::obtenerInstancia();
+                $consulta = $conexion->prepararConsulta(
+                    "UPDATE sector
+                            SET activo = :activo , actualizado = :actualizado
+                            WHERE id = $id");
+                $fecha = new DateTime(date("d-m-Y"));
+                $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->bindValue(':activo', '0', PDO::PARAM_STR);
+                $consulta->execute();
+
+                return 1;
+
+            }
         }
-        if ($usuario->fechaBaja != null) {
-            $consulta->bindValue(':fechaBaja', $usuario->fechaBaja, PDO::PARAM_INT);
-        } else {
-            $consulta->bindValue(':fechaBaja', null, PDO::PARAM_INT);
-        }
-        $claveHash = password_hash($usuario->clave, PASSWORD_DEFAULT);
-        $consulta->bindValue(':mail', $usuario->mail, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $claveHash, PDO::PARAM_STR);
-
-        $consulta->execute();
+        return $retorno;
     }
-
-    public static function borrarSector($id)
-    {
-        $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE usuario 
-                SET fechaBaja = :fechaBaja 
-                WHERE id = :id"
-        );
-        $fecha = new DateTime(date("d-m-Y"));
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
-        $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
-        $consulta->execute();
-    }*/
 }
