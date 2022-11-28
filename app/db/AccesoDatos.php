@@ -87,17 +87,19 @@ class AccesoDatos
     {
         $sql = "SELECT  pedido_producto.id,
                         pedido_producto.id_pedido AS pedido, 
-                        producto.nombre AS producto, 
-                        pedido_producto.cantidad AS cantidad, 
+                        pedido_producto.cantidad  AS cantidad, 
+                                 producto.nombre  AS producto, 
                         CASE 
                         WHEN pedido_producto.estado = 0 THEN 'Pendiente' 
                         WHEN pedido_producto.estado = 1 THEN 'En preparación' 
                         WHEN pedido_producto.estado = 2 THEN 'Listo' 
                         ELSE 'Error' end
                         as Estado 
-                FROM pedido_producto pedido_producto 
-                    LEFT JOIN producto  ON pedido_producto.id_producto = producto.id
-                    LEFT JOIN sector ON producto.id_sector = sector.id
+                FROM pedido_producto  
+                    LEFT JOIN producto  
+                                    ON pedido_producto.id_producto = producto.id
+                    LEFT JOIN sector 
+                                    ON producto.id_sector = sector.id
                 WHERE sector.id = $sector and pedido_producto.estado < 2
                 ORDER BY pedido_producto.id_pedido, pedido_producto.creado";
 

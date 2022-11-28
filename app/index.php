@@ -68,9 +68,6 @@ $app->group('/pedidoProductos', function (RouteCollectorProxy $group)
 
 });
   
-  
-  
-  
   $app->group('/pedido', function (RouteCollectorProxy $group)
   {
     

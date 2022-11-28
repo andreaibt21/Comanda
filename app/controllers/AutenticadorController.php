@@ -8,7 +8,7 @@ class AutentificadorController extends AutentificadorJWT
     {
         $parametros = $request->getParsedBody();
         $usuarioEnBD = Usuario::obtenerUsuario($parametros["id"]);
-        // echo $parametros["mail"];
+      
         if($usuarioEnBD !=null)
         {
             if(password_verify($parametros["clave"],$usuarioEnBD->clave))

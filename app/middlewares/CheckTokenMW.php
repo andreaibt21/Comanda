@@ -13,7 +13,7 @@ class CheckTokenMW{
        $response= new Response();
        try {
         json_encode(array('datos' => AutentificadorJWT::VerificarToken($token)));
-        echo "Token valido!!!";
+       // echo "Token valido!!!";
         $response= $handler->handle($request);
        
       } catch (Exception $e) {

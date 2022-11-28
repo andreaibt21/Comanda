@@ -1,0 +1,1602 @@
+{
+	"info": {
+		"_postman_id": "01a756e3-4bf3-4a76-9d35-9aab48c4e485",
+		"name": "COMANDA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuario Nuevo",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dni",
+							"value": "74859",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/usuarios/altaUsuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"usuarios",
+						"altaUsuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario modificar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"dni\": \"1564\",\r\n    \"clave\": 1234,\r\n    \"tipo\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/usuarios/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"usuarios",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/usuarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"usuarios",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario traer uno",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 20000\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/usuarios/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"usuarios",
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 12\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/parcialcripto/app/usuarios/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"parcialcripto",
+						"app",
+						"usuarios",
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TipoUsuario Nuevo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "test nuevo",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "10000",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/tipousuario/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"tipousuario",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TipoUsuario Modificar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "test nuevo",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "100062",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/tipousuario/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"tipousuario",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TipoUsuario Listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/tipousuario/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"tipousuario",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TipoUsuario Eliminar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "10006",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/tipousuario/borrar/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"tipousuario",
+						"borrar",
+						"1"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "10006",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sector Nuevo",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/sector/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"sector",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sector Modificar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "testi",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/sector/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"sector",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sector Eliminar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "testi",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/sector/borrar/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"sector",
+						"borrar",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sector Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "testi",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/sector/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"sector",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token Crear",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"lala@gmail.com\",\r\n    \"clave\": 1234\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/parcialcripto/app/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"parcialcripto",
+						"app",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto crear admin",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "arepa",
+							"type": "text"
+						},
+						{
+							"key": "id_sector",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "precio",
+							"value": "510",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto Modificar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "arepa de queso",
+							"type": "text"
+						},
+						{
+							"key": "id_sector",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nuevoPrecio",
+							"value": "510",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "idDelProducto",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto Eliminar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "arepa de queso",
+							"type": "text"
+						},
+						{
+							"key": "id_sector",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nuevoPrecio",
+							"value": "510",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "idDelProducto",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/borrar/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"borrar",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nuevoNombre",
+							"value": "arepa de queso",
+							"type": "text"
+						},
+						{
+							"key": "id_sector",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nuevoPrecio",
+							"value": "510",
+							"type": "text"
+						},
+						{
+							"key": "activo",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "idDelProducto",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto Crear csv",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/guardarCsv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"guardarCsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto Crear leer",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "archivo",
+							"type": "file",
+							"src": "/C:/xampp/htdocs/clasesPHP/LaComanda/app/productos.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/producto/leerCsv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"producto",
+						"leerCsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido Nuevo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "cliente",
+							"value": "Jorge",
+							"type": "text"
+						},
+						{
+							"key": "mesa",
+							"value": "10001",
+							"type": "text"
+						},
+						{
+							"key": "id_usuario",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "estara_en",
+							"value": "5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "cliente",
+							"value": "Andrea",
+							"type": "text"
+						},
+						{
+							"key": "mesa",
+							"value": "azul",
+							"type": "text"
+						},
+						{
+							"key": "id_usuario",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "estara_en",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido Modificar",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idPedido",
+							"value": "13",
+							"type": "text"
+						},
+						{
+							"key": "nuevaMesa",
+							"value": "10005",
+							"type": "text"
+						},
+						{
+							"key": "nuevoMozo",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido a Comiendo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "pedido",
+							"value": "13",
+							"type": "text"
+						},
+						{
+							"key": "nuevaMesa",
+							"value": "10005",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "nuevoMozo",
+							"value": "2",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/comiendo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"comiendo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido a Pagando",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "pedido",
+							"value": "14",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/pagando",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"pagando"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido a Cerrado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "pedido",
+							"value": "13",
+							"type": "text"
+						},
+						{
+							"key": "nuevaMesa",
+							"value": "10005",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "nuevoMozo",
+							"value": "2",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/cerrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"cerrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido Eliminar",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NzAxODAsImV4cCI6MTY3MDI3MDE4MCwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTU2NCIsImNsYXZlIjoiJDJ5JDEwJGNrOEN0YW5mcjdLUm5ERVloOU9mTGVoVmloMGJQcW80eXozZFB4MGxZRE1LREx2Rm9mZnQ2IiwidGlwbyI6MX0sImFwcCI6IlRlc3QgSldUIn0.uAR9_Jvb_UI0czR6zb-7Aw9xSBrkv4wCIGF1Dmf2JiY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/borrar/13",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"borrar",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PedidoProducto Nuevo",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjgzMTc2NDYsImV4cCI6MTY2ODM3NzY0NiwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsibWFpbCI6ImxhbGFAZ21haWwuY29tIiwiY2xhdmUiOiIkMnkkMTAkbUttcEpQOU5WRmRKRUxtOWlwWW9SLlgyaUN6Q3prSFZtazFuYXhYbVV1UFFPV0NiNjZpVXEiLCJwZXJmaWwiOiJjbGllbnRlIn0sImFwcCI6IlRlc3QgSldUIn0.j2qujvHAQR2mmMHBaeuDrvFiGwhgDx0PYblZ18eoR-A\"",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id_usuario",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "id_pedido",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "id_producto",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "cantidad",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "estado",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "activo",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedidoProductos/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedidoProductos",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PedidoProducto Eliminar",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjgzMTc2NDYsImV4cCI6MTY2ODM3NzY0NiwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsibWFpbCI6ImxhbGFAZ21haWwuY29tIiwiY2xhdmUiOiIkMnkkMTAkbUttcEpQOU5WRmRKRUxtOWlwWW9SLlgyaUN6Q3prSFZtazFuYXhYbVV1UFFPV0NiNjZpVXEiLCJwZXJmaWwiOiJjbGllbnRlIn0sImFwcCI6IlRlc3QgSldUIn0.j2qujvHAQR2mmMHBaeuDrvFiGwhgDx0PYblZ18eoR-A\"",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id_usuario",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "id_pedido",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "id_producto",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "cantidad",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "estado",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "activo",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedidoProductos/borrar/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedidoProductos",
+						"borrar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PedidoProducto enPreparacion",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjgzMTc2NDYsImV4cCI6MTY2ODM3NzY0NiwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsibWFpbCI6ImxhbGFAZ21haWwuY29tIiwiY2xhdmUiOiIkMnkkMTAkbUttcEpQOU5WRmRKRUxtOWlwWW9SLlgyaUN6Q3prSFZtazFuYXhYbVV1UFFPV0NiNjZpVXEiLCJwZXJmaWwiOiJjbGllbnRlIn0sImFwcCI6IlRlc3QgSldUIn0.j2qujvHAQR2mmMHBaeuDrvFiGwhgDx0PYblZ18eoR-A\"",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id_usuario",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "id_pedido",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "id_producto",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "cantidad",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "estado",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "activo",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedidoProductos/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedidoProductos",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PedidoProductos Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedidoProductos/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedidoProductos",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PedidoProducto listar barra",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njk2NjgxNTIsImV4cCI6MTY3MDI2ODE1MiwiYXVkIjoiZGIxNDRiOWMwMjEyYjQ0NDBhYmViODdlMzY3NmFhNDViZGMwYmE5MiIsImRhdGEiOnsiZG5pIjoiMTQyNTM2IiwiY2xhdmUiOiIkMnkkMTAkb1wvc3VrWmRjaHRueHFcL0U0T1lUcXF1OVU5MjQueTFqUHkyUXZUbTN1VEhwNGx4OWJFb3hhbSIsInRpcG8iOjN9LCJhcHAiOiJUZXN0IEpXVCJ9.z9mYMryRDlp1HVAwBndxr-2GiurhBwfgXHmji6X3zxo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/pedido/listabarra",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"pedido",
+						"listabarra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cliente Nuevo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Ixa",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/cliente/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"cliente",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cliente Modificar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "nuevoNombre",
+							"value": "gabi",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/cliente/modificar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"cliente",
+						"modificar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cliente Listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/cliente/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"cliente",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Token usuario",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/clasesPHP/LaComanda/app/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"clasesPHP",
+						"LaComanda",
+						"app",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
