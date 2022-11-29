@@ -1,5 +1,5 @@
 <?php
-include_once("db/AccesoDatos.php");
+include_once "db/AccesoDatos.php";
 
 class Usuario
 {
@@ -12,35 +12,42 @@ class Usuario
     public $creado;
     public $actualizado;
 
-    public function crearUsuario() //listo
+    public static function crearUsuario($usuario) //listo
     {
- 
-        $tipoAux= AccesoDatos::retornarObjetoActivoPorCampo($this->tipo, "id", "tipo_usuario", "nombre");
-        $usuarioAux =  AccesoDatos::retornarObjetoPorCampo($this->dni, "dni", "usuario", "Usuario");
-        var_dump($tipoAux);
-        var_dump($usuarioAux);
 
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta(
-            "INSERT
-                INTO usuario (dni, clave, tipo, activo, creado)
-                VALUES (:dni, :clave, :tipo, :activo, :creado)"
-        );
-        $fecha = new DateTime(date("d-m-Y"));
-        $consulta->bindValue(':creado', date_format($fecha, 'Y-m-d H:i:s'));
-        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+        $retorno = -1; //valor -- campo -- tabla -- clase
+        $tipoAux = AccesoDatos::retornarObjetoActivoPorCampo($usuario->tipo, "id", "tipo_usuario", "TipoUsuario");
+        $usuarioAux = AccesoDatos::retornarObjetoPorCampo($usuario->dni, "dni", "usuario", "Usuario");
+        if ($tipoAux == null) {
+            $retorno = 0;
+        } else {
+            if ($usuarioAux != null) {
+                $usuarioAux[0]->tipo = $tipoAux[0]->id;
+                Usuario::Modificar($usuarioAux[0]);
+                $retorno = 1;
+            } else {
+                $usuario->tipo = $tipoAux[0]->id;
+                //var_dump($usuario->tipo);
+                $objAccesoDatos = AccesoDatos::obtenerInstancia();
+                $consulta = $objAccesoDatos->prepararConsulta(
+                    "INSERT 
+                        INTO usuario (dni, clave, tipo, activo, creado, actualizado)
+                          VALUES (:dni, :clave, :tipo, :activo, :creado, :actualizado) ");
+                $claveHash = password_hash($usuario->clave, PASSWORD_DEFAULT);
+                $consulta->bindValue(':dni', $usuario->dni, PDO::PARAM_STR);
+                $consulta->bindValue(':clave', $claveHash);
+                $consulta->bindValue(':tipo', $usuario->tipo, PDO::PARAM_STR);
+                $consulta->bindValue(':activo', '1', PDO::PARAM_STR);
+                $fecha = new DateTime(date("d-m-Y H:i:s"));
+                $consulta->bindValue(':creado', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->execute();
 
-        $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
-
-        $consulta->bindValue(':dni', $this->dni, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $claveHash);
-        $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
-        $consulta->bindValue(':activo', $this->activo, PDO::PARAM_STR);
-        // $consulta->execute();
-
-        // return $objAccesoDatos->obtenerUltimoId();
+                $retorno = 2;
+            }
+        }
+        return $retorno;
     }
-  
 
     public static function obtenerTodos()
     {
@@ -92,20 +99,18 @@ class Usuario
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
         $consulta->execute();
-    } 
-    
+    }
+
     public static function Modificar($usuario)
     {
         $retorno = 3;
-    
+
         $usuarioAux = AccesoDatos::retornarObjetoActivo($usuario->id, 'usuario', 'Usuario');
-        if($usuarioAux != null)
-        {
+        if ($usuarioAux != null) {
             //busco si ya existe uno con ese DNI
             $usuarioAuxDNI = AccesoDatos::retornarObjetoPorCampo($usuario->dni, 'dni', 'usuario', 'Usuario');
-            $retorno = 2; 
-            if($usuarioAuxDNI  == null || $usuarioAuxDNI[0]->id == $usuario->id)
-            {
+            $retorno = 2;
+            if ($usuarioAuxDNI == null || $usuarioAuxDNI[0]->id == $usuario->id) {
                 $usuario->activo = 1;
                 $objAccesoDato = AccesoDatos::obtenerInstancia();
                 $consulta = $objAccesoDato->prepararConsulta(
@@ -118,7 +123,7 @@ class Usuario
                             actualizado = :actualizado
                         WHERE id = :id"
                 );
-        
+
                 $consulta->bindValue(':id', $usuario->id, PDO::PARAM_STR);
                 $consulta->bindValue(':dni', $usuario->dni, PDO::PARAM_STR);
                 $claveHash = password_hash($usuario->clave, PASSWORD_DEFAULT);
@@ -128,8 +133,8 @@ class Usuario
                 $fecha = new DateTime(date("d-m-Y H:i:s"));
                 $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
                 $consulta->execute();
-                //cambio el nombre 
-                $retorno = 1; 
+                //cambio el nombre
+                $retorno = 1;
             }
         }
         return $retorno;

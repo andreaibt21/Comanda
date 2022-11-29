@@ -6,25 +6,44 @@ class UsuarioController extends Usuario implements IApiUsable
 {
   public function CargarUno($request, $response, $args) //listo
   {
-    $parametros = $request->getParsedBody();
-
-    $dni = $parametros['dni'];
-    $clave = $parametros['clave'];
-    $tipo = $parametros['tipo'];
-    $activo = $parametros['activo'];
-
-    $usr = new Usuario();
-    $usr->dni = $dni;
-    $usr->clave = $clave;
-    $usr->tipo = $tipo;
-    $usr->activo = $activo;
-    $usr->crearUsuario();
-
-    $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
-
-    $response->getBody()->write($payload);
-    return $response
-      ->withHeader('Content-Type', 'application/json');
+    try
+        {
+            $params = $request->getParsedBody();
+            //var_dump($params);
+            $usuario = new Usuario();
+            $usuario->dni = $params["dni"];
+            $usuario->clave = $params["clave"];
+            $usuario->tipo = $params["tipo"];
+            $retorno = Usuario::crearUsuario($usuario);
+            switch($retorno)
+            {
+                case -1:
+                    $respuesta = "Problema generando el alta;";
+                    break;
+                case 0:
+                    $respuesta = "ERROR. No existe este tipo.";
+                    break;
+                case 1:
+                    $respuesta = "El usuario ya existía en la BD. Se actualizó y esta activo";
+                    break;
+                case 2:
+                    $respuesta = "Usuario creado con éxito.";
+                    break;
+                default:
+                    $respuesta = "Error";
+            }    
+            $payload = json_encode($respuesta);
+            $response->getBody()->write($payload);
+            $newResponse = $response->withHeader('Content-Type', 'application/json');
+        }
+        catch(Throwable $mensaje)
+        {
+            printf("Error al dar de alta: <br> $mensaje .<br>");
+        }
+        finally
+        {
+            return $newResponse;
+        }
   }
 
   public function TraerUno($request, $response, $args) //listo

@@ -76,6 +76,7 @@ $app->group('/pedido', function (RouteCollectorProxy $group)
   $group->post('/pagando', \PedidoController::class . ':PasarEstadoAPagando');
   $group->post('/cerrar', \PedidoController::class . ':PasarEstadoACerrado');
   $group->delete('/borrar/{id}', \PedidoController::class . ':BorrarUno');
+  $group->post('/guardarfoto[/]', \PedidoController::class . ':SubirFoto');
   $group->get('/listar[/]', \PedidoController::class . ':TraerTodos');
 
 })->add(new CheckTokenMW())->add(\UsuarioMW::class. ':ValidarMozo');

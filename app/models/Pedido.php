@@ -182,7 +182,7 @@ class Pedido
         return $retorno;
     }
 
-    public static function CalcularPrecioFinal($idPedido) //hacerpedidoproducto
+    public static function CalcularPrecioFinal($idPedido) //listo
     {
         $precio = 0;
 
@@ -196,6 +196,34 @@ class Pedido
         $precio = $consulta->fetch(); 
         //echo "precio  " . $precio;
         return $precio[0];
+    }
+
+    public function GuardarFoto() //listo
+    {     
+        $nombreFoto = "foto_pedido_".$this->id.".jpg";
+        $destino = ".".DIRECTORY_SEPARATOR."fotospedidos".DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR;
+
+        if(!file_exists($destino))
+        {
+            mkdir($destino, 0777, true);
+        }
+
+        $dir = $destino.$nombreFoto;
+
+        move_uploaded_file($this->foto, $dir);
+        $this->foto = $dir;
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta(
+                    "UPDATE pedido
+                        SET foto = :foto,                                                            
+                            actualizado = :actualizado
+                        WHERE id = :id");
+        $consulta->bindValue(':id', $this->id, PDO::PARAM_STR);
+        $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
+        $fecha = new DateTime(date("d-m-Y H:i:s"));
+        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+        $consulta->execute();
+        return $dir;
     }
 
 }

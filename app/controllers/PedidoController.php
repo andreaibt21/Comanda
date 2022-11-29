@@ -137,7 +137,7 @@ class PedidoController
             $pedido->id = $params["id"];
             $archivo = ($_FILES["archivo"]);
             $pedido->foto = ($archivo["tmp_name"]);
-            $pedido->GuardarImagen();
+            $pedido->GuardarFoto();
             //var_dump($archivo);
             $payload = json_encode("Carga exitosa.");
             $response->getBody()->write($payload);
