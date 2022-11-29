@@ -1,5 +1,7 @@
 <?php
 require_once './herramientas/herramientas.php';
+include_once "db/AccesoDatos.php";
+
 class Mesa
 {
     public $id;
@@ -27,7 +29,7 @@ class Mesa
             $retorno = 1;
         } else {
             $mesaAux[0]->activo = 1;
-            Mesa::Modificar($mesaAux[0]);
+            Mesa::ModificarMesa($mesaAux[0]);
             $retorno = 2;
         }
         return $retorno;
@@ -46,7 +48,7 @@ class Mesa
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoXProducto');
     }
 
-    public static function Modificar($mesa)
+    public static function ModificarMesa($mesa)
     {
         $retorno = 3;
         $mesaAux = AccesoDatos::retornarObjetoActivo($mesa->id, 'mesa', 'Mesa');
@@ -61,13 +63,13 @@ class Mesa
                     "UPDATE mesa
                         SET nombre = :nombre,
                             activo = :activo,
-                            updated_at = :updated_at
+                            actualizado = :actualizado
                         WHERE id = :id");
-                $consulta->bindValue(':id', $item->id, PDO::PARAM_STR);
-                $consulta->bindValue(':nombre', $item->nombre, PDO::PARAM_STR);
-                $consulta->bindValue(':activo', $item->activo, PDO::PARAM_STR);
+                $consulta->bindValue(':id', $mesa->id, PDO::PARAM_STR);
+                $consulta->bindValue(':nombre', $mesa->nombre, PDO::PARAM_STR);
+                $consulta->bindValue(':activo', $mesa->activo, PDO::PARAM_STR);
                 $fecha = new DateTime(date("d-m-Y H:i:s"));
-                $consulta->bindValue(':updated_at', date_format($fecha, 'Y-m-d H:i:s'));
+                $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
                 $consulta->execute();
                 $retorno = 1; //se cambia el nombre
             }
@@ -89,21 +91,23 @@ class Mesa
         return $retorno;
     }
 
-    public static function BorrarMesa($mesa)
+    public static function BorrarMesa($id)
     {
         $retorno = 0;
         $mesaAux = AccesoDatos::retornarObjetoActivo($id, 'mesa', 'Mesa');
+        var_dump($mesaAux);
         if ($mesaAux != null) {
             $estaOcupada = Mesa::EstaOcupada($mesaAux[0]);
             $retorno = 2;
             if ($estaOcupada == 0) {
                 $consulta = $conexion->prepararConsulta(
                     "UPDATE mesa
-                                SET activo = :activo , actualizado = :actualizado
-                                WHERE id = $id");
+                            SET activo = :activo , actualizado = :actualizado
+                            WHERE id = :id");
                 $fecha = new DateTime(date("d-m-Y"));
                 $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
                 $consulta->bindValue(':activo', '0', PDO::PARAM_STR);
+                $consulta->bindValue(':id', $id);
                 $consulta->execute();
                 $retorno = 1;
             }

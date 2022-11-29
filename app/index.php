@@ -27,6 +27,7 @@ require_once './controllers/PedidoProductoController.php';
 require_once './controllers/AutenticadorController.php';
 include_once './controllers/PedidoController.php';
 include_once './controllers/ClienteController.php';
+include_once './controllers/MesaController.php';
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
@@ -62,36 +63,34 @@ $app->group('/pedidoProductos', function (RouteCollectorProxy $group)
   $group->delete('/borrar/{id}', \PedidoProductoController::class . ':BorrarUno');
   $group->get('/listar', \PedidoProductoController::class . ':TraerTodos');//listo
 
-  $group->get('/paraservir[/]', \ReportesController::class . ':PedidoProductoListoParaServir'); 
-  $group->post('/comiendo[/]', \PedidoController::class . ':PasarAComiendo'); 
-  $group->post('/pagando[/]', \PedidoController::class . ':PasarAPagando'); 
-
+  $group->post('/enPreparacion[/]', \PedidoProductoController::class . ':PedidoEnPreparacion');
+  $group->post('/listoAServir[/]', \PedidoProductoController::class . ':PedidoListo');
 });
+
+$app->group('/pedido', function (RouteCollectorProxy $group)
+{
   
-  $app->group('/pedido', function (RouteCollectorProxy $group)
-  {
-    
-    $group->post('/crear', \PedidoController::class . ':CargarUno');
-    $group->post('/modificar[/]', \PedidoController::class . ':ModificarUno');
-    $group->post('/comiendo', \PedidoController::class . ':PasarEstadoAComiendo');
-    $group->post('/pagando', \PedidoController::class . ':PasarEstadoAPagando');
-    $group->post('/cerrar', \PedidoController::class . ':PasarEstadoACerrado');
-    $group->delete('/borrar/{id}', \PedidoController::class . ':BorrarUno');
-    $group->get('/listar[/]', \PedidoController::class . ':TraerTodos');
+  $group->post('/crear', \PedidoController::class . ':CargarUno');
+  $group->post('/modificar[/]', \PedidoController::class . ':ModificarUno');
+  $group->post('/comiendo', \PedidoController::class . ':PasarEstadoAComiendo');
+  $group->post('/pagando', \PedidoController::class . ':PasarEstadoAPagando');
+  $group->post('/cerrar', \PedidoController::class . ':PasarEstadoACerrado');
+  $group->delete('/borrar/{id}', \PedidoController::class . ':BorrarUno');
+  $group->get('/listar[/]', \PedidoController::class . ':TraerTodos');
 
-  })->add(new CheckTokenMW())->add(\UsuarioMW::class. ':ValidarMozo');
+})->add(new CheckTokenMW())->add(\UsuarioMW::class. ':ValidarMozo');
 
-  $app->group('/pedido', function (RouteCollectorProxy $group)
-  {
-    $group->get('/listabarra[/]', \PedidoProductoController::class . ':ListarPedidosBarra')
-    ->add(\UsuarioMW::class. ':ValidarBartender');
-    $group->get('/listachoperas[/]', \PedidoProductoController::class . ':ListarPedidosChoperas')
-    ->add(\UsuarioMW::class. ':ValidarCervecero');
-    $group->get('/listacocina[/]', \PedidoProductoController::class . ':ListarPedidosCocina')
-    ->add(\UsuarioMW::class. ':ValidarCocinero');  
-    $group->get('/listacandybar[/]', \PedidoProductoController::class . ':ListarPedidosCandybar') 
-    ->add(\UsuarioMW::class. ':ValidarRepostero');
-  }) ->add(new CheckTokenMW());
+$app->group('/pedido', function (RouteCollectorProxy $group)
+{
+  $group->get('/listabarra[/]', \PedidoProductoController::class . ':ListarPedidosBarra')
+  ->add(\UsuarioMW::class. ':ValidarBartender');
+  $group->get('/listachoperas[/]', \PedidoProductoController::class . ':ListarPedidosChoperas')
+  ->add(\UsuarioMW::class. ':ValidarCervecero');
+  $group->get('/listacocina[/]', \PedidoProductoController::class . ':ListarPedidosCocina')
+  ->add(\UsuarioMW::class. ':ValidarCocinero');  
+  $group->get('/listacandybar[/]', \PedidoProductoController::class . ':ListarPedidosCandybar') 
+  ->add(\UsuarioMW::class. ':ValidarRepostero');
+}) ->add(new CheckTokenMW());
 
 
 $app->group('/producto', function (RouteCollectorProxy $group) //listo
@@ -126,17 +125,23 @@ $app->group('/sector', function (RouteCollectorProxy $group) //listo
   $group->get('/listar[/]', \SectorController::class . ':TraerTodos'); //listo
 })->add(new CheckTokenMW()) ->add(\UsuarioMW::class. ':ValidarSocio');
 
-
 $app->group('/cliente', function (RouteCollectorProxy $group) //listo
 {
   //ABM
   $group->post('/crear', \ClienteController::class . ':CargarUno');
-   $group->put('/modificar[/]', \ClienteController::class . ':ModificarUno');
+  $group->put('/modificar[/]', \ClienteController::class . ':ModificarUno');
   $group->delete('/borrar/{id}', \ClienteController::class . ':BorrarUno');
-   $group->get('/listar[/]', \ClienteController::class . ':TraerTodos');
+  $group->get('/listar[/]', \ClienteController::class . ':TraerTodos');
 });
 
+$app->group('/mesa', function (RouteCollectorProxy $group) 
+{
 
+  $group->post('/crear[/]', \MesaController::class . ':CargarUno'); 
+  $group->delete('/borrar/{id}[/]', \MesaController::class . ':BorrarUno');
+  $group->post('/modificar[/]', \MesaController::class . ':ModificarUno'); 
+  $group->get('/lista[/]', \MesaController::class . ':TraerTodos'); 
+});
 
 $app->get('[/]', function (Request $request, Response $response) {
   $payload = json_encode(array("mensaje" => " LA SUPER COMANDA DE ANDREA :D "));

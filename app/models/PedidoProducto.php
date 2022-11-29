@@ -129,32 +129,47 @@ class PedidoProducto
 
     public static function CambiarEstado($idEstado, $idPedidoProducto, $idUsuario = null, $tardanzaEnMinutos = null)
     {
+        $pedidoProducto = new PedidoProducto();
         $pedidoProducto = AccesoDatos::retornarObjetoActivoPorCampo($idPedidoProducto, 'id', 'pedido_producto', 'PedidoProducto');
-
+        // var_dump($pedidoProducto);
         switch ($idEstado) {
             case 1:
                 //Cambiar a en preparacion
                 $pedidoProducto[0]->id_usuario = $idUsuario;
-                $pedidoProducto->estado = 1;
+                $pedidoProducto[0]->estado = 1;
                 $fecha = new DateTime(date("d-m-Y H:i:s"));
-                $pedidoProducto->fecha_prevista = $fecha->modify('+' . $tardanzaEnMinutos . ' minutes');
-                $pedidoProducto->fecha_prevista = $pedidoProducto->fecha_prevista->format("Y-m-d H:i:s");
+                $pedidoProducto[0]->fecha_prevista = $fecha->modify('+' . $tardanzaEnMinutos . ' minutes')->format("Y-m-d H:i:s");
 
                 break;
             case 2:
                 //Cambiar a para servir
-                $pedidoProducto->estado = 2;
-                $pedidoProducto->fecha_fin = new DateTime(date("d-m-Y H:i:s"));
-                $pedidoProducto->fecha_fin = $pedidoProducto->fecha_fin->format("Y-m-d H:i:s");
+                $pedidoProducto[0]->estado = 2;
+                $fecha = new DateTime(date("d-m-Y H:i:s"));
+                $pedidoProducto[0]->fecha_fin = $fecha->format("Y-m-d H:i:s");
 
                 break;
         }
-        PedidoProducto::ModificarPedidoProducto($pedidoProducto);
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedido_producto
+                    SET
+                        estado = :estado,
+                        fecha_fin = :fecha_fin,
+                        fecha_prevista = :fecha_prevista,
+                        actualizado = :actualizado
+                    WHERE id = :id");
+
+        $consulta->bindValue(':id', $pedidoProducto[0]->id, PDO::PARAM_STR);
+        $consulta->bindValue(':estado', $pedidoProducto[0]->estado, PDO::PARAM_STR);
+        $consulta->bindValue(':fecha_prevista', $pedidoProducto[0]->fecha_prevista);
+        $consulta->bindValue(':fecha_fin', $pedidoProducto[0]->fecha_fin);
+        $fecha = new DateTime(date("d-m-Y H:i:s"));
+        $consulta->bindValue(':actualizado', date_format($fecha, 'Y-m-d H:i:s'));
+         $consulta->execute();
     }
 
-
-
-    public static function ObtenerTodosSector($sector) {//listo
+    public static function ObtenerTodosSector($sector)
+    { //listo
 
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta(
@@ -166,5 +181,4 @@ class PedidoProducto
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
- 
 }

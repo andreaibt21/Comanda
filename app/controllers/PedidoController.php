@@ -219,27 +219,7 @@ class PedidoController
         }  
     }
 
-    public function HacerPdf($request, $response, $args)
-    {
-        try
-        {
-            $params = $request->getParsedBody();
-            $pedido = $params["pedido"];
-            $lista = PDF::hacerPDF($pedido);
-            $payload = json_encode(array("listaPedidosCerrados" => $lista));
-            $response->getBody()->write($payload);
-            $newResponse = $response->withHeader('Content-Type', 'application/json');
-        }
-        catch(Throwable $mensaje)
-        {
-            printf("Error al listar: <br> $mensaje .<br>");
-        }
-        finally
-        {
-            return $newResponse;
-        }    
-    }
-
+   
    
 }
 

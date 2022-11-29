@@ -116,12 +116,11 @@ class PedidoProductoController extends PedidoProducto
         try
         {
             $params = $request->getParsedBody();
-            $idPedidoProducto = $params["id"];
-            $idUsuario = $params["usuario"];
+            $idPedidoProducto = $params["id_pp"];
+            $idUsuario = $params["id_usuario"];
             $tardanzaEnMinutos = $params["tiempo"];
-
             PedidoProducto::CambiarEstado('1', $idPedidoProducto, $idUsuario, $tardanzaEnMinutos);
-            $payload = json_encode("Pedido en preparación.");
+            $payload = json_encode("Pedido en preparacion");
             $response->getBody()->write($payload);
             $newResponse = $response->withHeader('Content-Type', 'application/json');
         }
@@ -141,9 +140,9 @@ class PedidoProductoController extends PedidoProducto
         try
         {
             $params = $request->getParsedBody();
-            $idPedidoProducto = $params["id"];
+            $idPedidoProducto = $params["id_pp"];
             PedidoProducto::CambiarEstado('2', $idPedidoProducto);
-            $payload = json_encode("Pedido listo para servir.");
+            $payload = json_encode("Pedido listo para servir");
             $response->getBody()->write($payload);
             $newResponse = $response->withHeader('Content-Type', 'application/json');
         }
